@@ -1,10 +1,15 @@
-FROM node:lts-alpine
-ENV NODE_ENV=production
-WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm install --production --silent && mv node_modules ../
+FROM node:18.12.1-bullseye as builder
+WORKDIR /app
 COPY . .
-EXPOSE 3333
-RUN chown -R node /usr/src/app
-USER node
-CMD ["npm", "start"]
+
+RUN npm install
+RUN npm run build
+
+FROM node:18.12.1-bullseye
+WORKDIR /app
+
+COPY --from=builder /app/dist /dist
+COPY --from=builder /app/node_modules /node_modules
+COPY --from=builder /app/package.json /package.json
+
+CMD ["npm", "run", "start:prod"]
