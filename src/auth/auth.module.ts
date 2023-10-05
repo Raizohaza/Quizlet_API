@@ -5,7 +5,7 @@ import { MysqlService } from 'src/connect/mysql.service';
 
 @Module({
   controllers: [AuthController],
-  imports : [MysqlModule],
+  imports: [MysqlModule],
   providers: [MysqlService],
 })
 export class AuthModule {}

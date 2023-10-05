@@ -21,15 +21,23 @@ export class MysqlService {
 
   async insertData(data: LoginInsert) {
     try {
-      var result = await this.connection.execute(
+      const result = await this.connection.execute(
         'INSERT INTO user (username, password, full_name, email, date_of_birth, description, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [data.username, data.password, data.full_name, data.email, data.date_of_birth, data.description, data.status]
+        [
+          data.username,
+          data.password,
+          data.full_name,
+          data.email,
+          data.date_of_birth,
+          data.description,
+          data.status,
+        ],
       );
-    
+
       if (result) {
         return result;
       } else {
-        throw new Error("Insertion failed");
+        throw new Error('Insertion failed');
       }
     } catch (error) {
       throw error.message;
@@ -38,14 +46,15 @@ export class MysqlService {
 
   async SelectPassWord(username: string) {
     try {
-      var result = await this.connection.execute(
-        'SELECT password from user WHERE username = ?', [username]
+      const result = await this.connection.execute(
+        'SELECT password from user WHERE username = ?',
+        [username],
       );
-    
+
       if (result) {
         return result[0][0];
       } else {
-        throw new Error("Select user failed");
+        throw new Error('Select user failed');
       }
     } catch (error) {
       throw error.message;

@@ -8,24 +8,24 @@ export class LoginDto {
   password: string;
 }
 
-export class LoginInsert{
-    @ApiProperty()
-    username: string;
-  
-    @ApiProperty()
-    password: string;
+export class LoginInsert {
+  @ApiProperty()
+  username: string;
 
-    @ApiProperty()
-    full_name: string;
-  
-    @ApiProperty()
-    email: string;
-    @ApiProperty()
-    date_of_birth: Date;
-  
-    @ApiProperty()
-    description: string;
+  @ApiProperty()
+  password: string;
 
-    @ApiProperty()
-    status: number;
-  }
+  @ApiProperty()
+  full_name: string;
+
+  @ApiProperty()
+  email: string;
+  @ApiProperty()
+  date_of_birth: Date;
+
+  @ApiProperty()
+  description: string;
+
+  @ApiProperty()
+  status: number;
+}

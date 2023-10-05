@@ -1,7 +1,11 @@
-import { Controller, Post, Body, InternalServerErrorException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { MysqlService } from './mysql.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-
 
 @ApiTags('Mysql')
 @Controller('mysql')

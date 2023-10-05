@@ -4,6 +4,6 @@ import { MysqlService } from './mysql.service';
 
 @Module({
   controllers: [MysqlController],
-  providers: [MysqlService]
+  providers: [MysqlService],
 })
 export class MysqlModule {}
