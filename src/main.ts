@@ -16,7 +16,8 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   const globalPrefix = 'api';
-  const port = process.env.PORT || process.argv[2] || 3333;
+  // const port = process.env.PORT || process.argv[2] || 3333;
+  const port = 3333;
 
   SwaggerModule.setup('api', app, document);
   await app.listen(port);
