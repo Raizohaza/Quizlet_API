@@ -5,8 +5,9 @@ import * as chalk from 'chalk';
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: () => void): void {
-    console.log('******* LoggerMiddleware *******');
+
     const logger = new Logger('Request');
+    logger.log('******* LoggerMiddleware *******');
     logger.log(
       `[${chalk.white(req.method)}] ${chalk.cyan(
         res.statusCode?.toString(),

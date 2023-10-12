@@ -1,53 +1,39 @@
 import {
-  Controller,
-  Post,
   Body,
-  UnauthorizedException,
-  BadGatewayException,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Request,
 } from '@nestjs/common';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { LoginDto, LoginInsert } from './auth.dto';
-import { MysqlService } from '../connect/mysql.service';
+import { AuthService } from './auth.service';
+import { Public } from './decorators/public.decorator';
 import * as bcrypt from 'bcrypt';
-import { ok } from 'assert';
-
+import { UsersService } from 'src/users/users.service';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { LoginDTO } from './dto/login.dto';
 @ApiTags('Auth')
+@ApiBearerAuth()
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly mysqlService: MysqlService) {}
+  constructor(private authService: AuthService, private userService: UsersService) {}
 
+  @Public()
+  @HttpCode(HttpStatus.OK)
   @Post('login')
-  @ApiResponse({ status: 200, description: 'Đăng nhập thành công.' })
-  @ApiResponse({ status: 401, description: 'Đăng nhập không thành công.' })
-  async login(@Body() loginData: LoginDto) {
-    var paswordhash = await this.mysqlService.SelectPassWord(
-      loginData.username,
-    );
-    bcrypt.compare(
-      loginData.password,
-      paswordhash['password'],
-      (err, result) => {
-        if (err) {
-          throw new UnauthorizedException(
-            'Đã có lỗi xảy khi trong quá trình xác',
-          );
-        } else if (result === true) {
-          return 0;
-        } else {
-          return { message: 'Đăng nhập không thành công.' };
-        }
-      },
-    );
+  signIn(@Body() signInDto: LoginDTO) {
+    return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
+  }
+  @Public()
   @Post('register')
-  async insertData(@Body() data: LoginInsert) {
-    data.password = await bcrypt.hash(data.password, 10);
-    try {
-      var result = await this.mysqlService.insertData(data);
-      return result;
-    } catch (error) {
-      throw error.message;
-    }
+  register(@Body() data: CreateUserDto) {
+    return this.userService.create(data);
   }
 }
