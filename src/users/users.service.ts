@@ -14,10 +14,15 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const isExisted = await this.findOneByEmail(createUserDto.email);
-    if(isExisted !== null){
+    const isExistedEmail = await this.findOneByEmail(createUserDto.email);
+    const isExistedUsername = await this.findOneByUsername(createUserDto.username);
+    
+    if(isExistedEmail !== null)
       throw new BadRequestException("Email is already used!");
-    }
+    
+    if(isExistedUsername !== null)
+      throw new BadRequestException("Username is already used!");
+
     createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     createUserDto.status = 1;
     return await this.usersRepository.save(createUserDto);
@@ -37,6 +42,10 @@ export class UsersService {
 
   async findOneByEmail(email: string): Promise<User | null> {
     return await this.usersRepository.findOneBy({ email , status: 1});
+  }
+
+  async findOneByUsername(username: string): Promise<User | null> {
+    return await this.usersRepository.findOneBy({ username , status: 1});
   }
 
   async remove(id: number): Promise<void> {

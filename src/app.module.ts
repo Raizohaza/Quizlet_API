@@ -25,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
         database: configService.get<string>('DATABASE'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         ssl: true,
+        cache: true,
         extra: {
           ssl: {
             rejectUnauthorized: true,

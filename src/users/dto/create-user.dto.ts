@@ -1,5 +1,6 @@
 import { ApiHideProperty, ApiProperty } from "@nestjs/swagger";
-import { IsEmail } from "class-validator";
+import { Type } from "class-transformer";
+import { IsDate, IsEmail } from "class-validator";
 
 export class CreateUserDto {
     @ApiProperty({
@@ -26,6 +27,8 @@ export class CreateUserDto {
     @ApiProperty({
         example: '2023-1-1'
     })
+    @Type(() => Date)
+    @IsDate()
     date_of_birth: Date= new Date;
   
     @ApiProperty({

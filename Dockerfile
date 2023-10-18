@@ -1,4 +1,4 @@
-FROM node:18.12.1-bullseye as builder
+FROM node:20.8.1-bullseye as builder
 WORKDIR /app
 COPY . .
 

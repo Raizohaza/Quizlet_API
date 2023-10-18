@@ -14,7 +14,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   const document = SwaggerModule.createDocument(app, config);
   const globalPrefix = 'api';
   // const port = process.env.PORT || process.argv[2] || 3333;
